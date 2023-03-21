@@ -1,0 +1,260 @@
+1. Design your ecommerce database in MongoDB with the specifications provided below
+
+use Ecommproject
+db.createCollection("Customers")
+db.Customers.insertMany([
+{
+"C_ID":101,
+"C_Name":"Jatin",
+"C_DOB":new Date('21/12/1989'),
+"C_Contact":"9834565656",
+"C_city":"Rajkot",
+"order_amount":4500,
+"C_arival":"2months",
+"C_Type":"Premium"
+},
+{
+"C_ID":102,
+"C_Name":"Kapil",
+"C_DOB":new Date('19/10/1991'),
+"C_Contact":"7834565656",
+"C_city":"Surat",
+"order_amount":6900,
+"C_arival":"1months",
+"C_Type":"Normal"
+},
+{
+"C_ID":103,
+"C_Name":"Shruti",
+"C_DOB":new Date('08/3/1995'),
+"C_Contact":"777765656",
+"C_city":"Banglore",
+"order_amount":5100,
+"C_arival":"3months",
+"C_Type":"Premium"
+}
+]);
+
+db.seller.insertMany([
+{
+"Products":["add","Remove"],
+"S_Name":"Aditya",
+"S_ID":207,
+"no_of_product_ Sold":4,
+"S_City":"Rajkot",
+"S_Contact":987658909
+},
+{
+"Products":["add","Remove"],
+"S_Name":"Abhimanyu",
+"S_ID":208,
+"no_of_product_ Sold":8,
+"S_City":"Baroda",
+"S_Contact":987658909
+},
+{
+"Products":["add","Remove"],
+"S_Name":"Sudeep",
+"S_ID":206,
+"no_of_product_ Sold":9,
+"S_City":"Rajkot",
+"S_Contact":987658909
+}]);
+
+db.Admin.insert(
+{
+Products:["add","Remove"],
+A_Name:"Ajmera",
+A_ID:89,
+A_email:"jpajmera@hotmail.com"
+}
+)
+
+db.createCollection("Order")
+db.Order.insertMany([
+{
+"C_ID":101,
+"O_Date":"2022-11-01",
+"O_Status":"PENDING",
+"O_Amount":6700
+},
+{
+"C_ID":102,
+"O_Date":"2022-10-09",
+O_Status":"DELIVERED",
+"O_Amount":2970
+},
+{
+"C_ID":103,
+"O_Date":"2022-10-25",
+O_Status":"REFUNDED",
+"O_Amount":7975
+}]);
+
+db.cart.insertMany([
+{
+C_ID:101,
+P_ID:901,
+status:'Active',
+quantity:2,
+total:375,
+payment:"PENDING"
+products:['type c datacable','cofee']
+},
+C_ID:102,
+P_ID:903,
+status:'Active',
+quantity:5,
+total:3775,
+payment:"sucessful"
+products:['dark_chocolate','mobile_stand','speaker','jeans','green_tea']
+},
+C_ID:103,
+P_ID:904,
+status:'Active',
+quantity:2,
+total:1000,
+payment:"sucessful"
+products:['Brown_Bread','garlic_cheese']
+}]);
+
+
+db.Products.insertMany([
+{
+"P_Name":"Chocolate",
+"P_ID":901,
+tags:['piperment','toffy','rosted_almond','dark_chocolate'],
+categories:['simple','imported']
+},
+{
+"P_Name":"cloths",
+"P_ID":902,
+size:['s','m','l','xl','xxl','3xl'],
+tags:['10&discount','40%discount','Buy_one_Get_One_free','New']
+categories:['shirts','tshirts','jeans','shorts'],
+},
+{
+"P_Name":"Mobile_Accessories",
+"P_ID":903,
+tags:['10%discount','Buy_one_Get_One_free','New']
+categories:['Datacables','Blutooth_speaker','Pop_shocket','mobile_stand'],
+},
+{
+"P_Name":"others",
+"P_ID":904,
+tags:['20%discount','Buy_one_Get_One_free','New']
+categories:['green_tea','waffers','Dryfruit_Halwa','Cold_Drinks']
+]})
+
+db.subcategories.insertMany([
+{
+item:'imported_Chocolate',
+name:'Ferrero_Rocher',
+cost:4500,
+qty:50,
+},
+{
+item:'cloths',
+name:'spyker jeans',
+cost:15000,
+qty:10,
+},
+{
+item:'Mobile_Accessories',
+name:'spyderman_pop_shocket',
+cost:500,
+qty:10,
+},
+{
+item:'others',
+name:'kurkure_popcorn',
+cost:100,
+qty:10,
+}])
+
+
+//coupencode /billing we can add
+db.Payment.insertMany([
+{
+"P_ID":201,
+"P_DATE":"2022-10-09",
+AMOUNT:1000
+},
+{
+"P_ID":202,
+"P_DATE":"2022-10-07",
+AMOUNT:2000
+},
+{
+"P_ID":203,
+"P_DATE":"2022-11-17",
+AMOUNT:3000
+}]);
+
+
+
+
+db.Tracking.insertMany([
+{
+"T_id":"AWD7237",
+"Courier_Name":"DTDC"
+},
+{
+"T_id":"AWBD3981",
+"Courier_Name":"BLUE DART"
+},
+{
+"T_id":"AWGT72398",
+"Courier_Name":"GATI"
+}]);
+
+
+
+b.	Each Customer has a type of being normal or premium member
+for Premium Customers:
+db.Customers.find({C_Type:'Premium'})
+
+for Normal Customers:
+db.Customers.find({C_Type:'Normal'})
+1.	Create your collections for your ecommerce database in MongoDB and fill it with sample information
+
+use Ecommproject
+show Collections
+db.Customers.find()
+db.Seller.find()
+db.Admin.find()
+db.cart.find()
+db.order.find()
+db.Products.find()
+
+1.Write a query to find the average order value for all Customers.
+db.customer.aggregate({$avg:"order_amount"})
+
+2.Query your database to get top 10 customers whose orders have the highest value and who have been customers since 
+less than 2 months
+db.customer.find({"C_arival":{"$lt":2months}}).sort({"order_amount":-1}).limit(10)
+
+3.Query your database to find the sum of all orders received in this month
+db.order.aggregate([{$match:{O_Date:{$gte:"2022-11-01",$lte:"2022-11-30"}}},{$sum:"DELIVERED"}])
+
+4.Query your database to find customers count in various cities, group them by names of cities
+db.customer.aggregate([{$group:{_id:"$C_city", count:{$C_ID} ])
+
+5.Query your database to get all the sellers who have base in the same city in which the customers who ordered their products. Order them in the order of highest number of products sold to customers in same city to lowest.
+
+db.getCollection('seller').aggregate([{
+$lookup:
+{
+from : 'Customers',
+localField : 'S_City',
+foreignField : 'C_city',
+as : 'customerDetails'
+}
+},
+{
+"$sort":{
+"no_of_product_ Sold" : -1
+}},
+{ $match : { 'customerDetails' : { $ne : []}}},
+]);
+
